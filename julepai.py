@@ -4,9 +4,11 @@ import os
 from dotenv import load_dotenv
 import streamlit as st
 
-st.set_page_config(page_title="Foodie Tour Generator", page_icon="🍽️")  # <-- FIRST Streamlit command
+st.set_page_config(page_title="Foodie Tour Generator",
+                   page_icon="🍽️")  # <-- FIRST Streamlit command
 
 load_dotenv()
+
 
 def get_weather_condition(city):
     api_key = os.getenv("OPENWEATHER_API_KEY")
@@ -17,16 +19,21 @@ def get_weather_condition(city):
         return data["weather"][0]["main"]
     return "Clear"
 
+
 # --- Dishes Module ---
 city_dish_map = {
     "Bangkok": ["Pad Thai", "Tom Yum Goong", "Mango Sticky Rice"],
     "Barcelona": ["Paella", "Tapas", "Crema Catalana"],
     "Tokyo": ["Sushi", "Ramen", "Mochi"]
 }
+
+
 def get_iconic_dishes(city):
     return city_dish_map.get(city, ["Local Specialty"])
 
 # --- Restaurants Module ---
+
+
 def find_top_restaurants(city, dishes, dining_type):
     api_key = os.getenv("YELP_API_KEY")
     headers = {"Authorization": f"Bearer {api_key}"}
@@ -46,6 +53,8 @@ def find_top_restaurants(city, dishes, dining_type):
     return restaurants
 
 # --- Tour Generator Module ---
+
+
 def generate_foodie_tour(city, weather, dining_type, dishes, restaurants):
     narrative = f"Weather today in {city}: {weather} (recommended {dining_type} dining)\n"
     meals = ["Breakfast", "Lunch", "Dinner"]
@@ -58,47 +67,53 @@ def generate_foodie_tour(city, weather, dining_type, dishes, restaurants):
         narrative += f"This top-rated spot ({rest['rating']}⭐) offers a great {dining_type} setting.\n"
     return narrative
 
-# Streamlit Web Interface
+# # Streamlit Web Interface
 
-st.set_page_config(page_title="Foodie Tour Generator", page_icon="🍽️")
-st.title("🍴 One-Day Foodie Tour Generator")
+# st.set_page_config(page_title="Foodie Tour Generator", page_icon="🍽️")
+# st.title("🍴 One-Day Foodie Tour Generator")
+
 
 city_input = st.text_input("Enter a city:")
 
 if st.button("Generate Tour") and city_input:
     city = city_input.title()
     weather = get_weather_condition(city)
-    dining_type = "outdoor" if weather in ["Clear", "Sunny", "Partly Cloudy"] else "indoor"
+    dining_type = "outdoor" if weather in [
+        "Clear", "Sunny", "Partly Cloudy"] else "indoor"
     dishes = get_iconic_dishes(city)
     restaurant_data = find_top_restaurants(city, dishes, dining_type)
-    tour_narrative = generate_foodie_tour(city, weather, dining_type, dishes, restaurant_data)
+    tour_narrative = generate_foodie_tour(
+        city, weather, dining_type, dishes, restaurant_data)
     st.text(tour_narrative)
-    
+
     # --- Main Execution Block ---
 cities = ["Bangkok", "Barcelona", "Tokyo"]
 
 for city in cities:
     print(f"\n🍴 Foodie Tour for {city} 🍴")
     weather = get_weather_condition(city)
-    dining_type = "outdoor" if weather in ["Clear", "Sunny", "Partly Cloudy"] else "indoor"
+    dining_type = "outdoor" if weather in [
+        "Clear", "Sunny", "Partly Cloudy"] else "indoor"
     dishes = get_iconic_dishes(city)
     restaurant_data = find_top_restaurants(city, dishes, dining_type)
-    tour_narrative = generate_foodie_tour(city, weather, dining_type, dishes, restaurant_data)
+    tour_narrative = generate_foodie_tour(
+        city, weather, dining_type, dishes, restaurant_data)
     print(tour_narrative)
-    
-    code = st.set_page_config(page_title="Foodie Tour Generator", page_icon="🍽️")
-st.title("🍴 One-Day Foodie Tour Generator")
+
+    # code = st.set_page_config(page_title="Foodie Tour Generator", page_icon="🍽️")
+# st.title("🍴 One-Day Foodie Tour Generator")
 
 city_input = st.text_input("Enter a city:")
 
 if st.button("Generate Tour") and city_input:
     city = city_input.title()
     weather = get_weather_condition(city)
-    dining_type = "outdoor" if weather in ["Clear", "Sunny", "Partly Cloudy"] else "indoor"
+    dining_type = "outdoor" if weather in [
+        "Clear", "Sunny", "Partly Cloudy"] else "indoor"
     dishes = get_iconic_dishes(city)
     restaurant_data = find_top_restaurants(city, dishes, dining_type)
-    tour_narrative = generate_foodie_tour(city, weather, dining_type, dishes, restaurant_data)
+    tour_narrative = generate_foodie_tour(
+        city, weather, dining_type, dishes, restaurant_data)
     st.text(tour_narrative)
 with open("julepai.py", "w", encoding="utf-8") as f:
     f.write(code)
-
