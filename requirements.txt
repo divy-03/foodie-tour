@@ -1,0 +1,4 @@
+# filepath: c:\Users\patha\Dropbox\Coding\Python\project\requirements.txt
+streamlit
+requests
+dotenv
