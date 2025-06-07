@@ -1,4 +1,3 @@
-# modules/dishes.py
 city_dish_map = {
     "Bangkok": ["Pad Thai", "Tom Yum Goong", "Mango Sticky Rice"],
     "Barcelona": ["Paella", "Tapas", "Crema Catalana"],

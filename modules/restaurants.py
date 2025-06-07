@@ -1,24 +1,32 @@
-# modules/restaurants.py
 import os
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
-def find_top_restaurants(city, dishes, dining_type):
-    api_key = os.getenv("YELP_API_KEY")
-    headers = {"Authorization": f"Bearer {api_key}"}
+def find_top_restaurants(city, dishes):
+    api_key = os.getenv("FOURSQUARE_API_KEY")
+    headers = {
+        "Authorization": api_key,
+        "Accept": "application/json"
+    }
+
     restaurants = {}
     for dish in dishes:
-        url = f"https://api.yelp.com/v3/businesses/search?term={dish}&location={city}&limit=1&sort_by=rating"
-        response = requests.get(url, headers=headers)
+        params = {
+            "query": dish,
+            "near": city,
+            "limit": 1
+        }
+        url = "https://api.foursquare.com/v3/places/search"
+        response = requests.get(url, headers=headers, params=params)
         data = response.json()
-        if "businesses" in data and data["businesses"]:
-            business = data["businesses"][0]
+        if "results" in data and len(data["results"]) > 0:
+            place = data["results"][0]
+            address = ", ".join(place["location"].get("formatted_address", []))
             restaurants[dish] = {
-                "name": business["name"],
-                "address": ", ".join(business["location"]["display_address"]),
-                "type": dining_type,
-                "rating": business.get("rating", 4.5)
+                "name": place["name"],
+                "address": address or "Unknown Street",
+                "rating": 4.5  # Foursquare free tier doesn't return ratings
             }
     return restaurants
