@@ -3,6 +3,9 @@ import requests
 import os
 from dotenv import load_dotenv
 import streamlit as st
+
+st.set_page_config(page_title="Foodie Tour Generator", page_icon="🍽️")  # <-- FIRST Streamlit command
+
 load_dotenv()
 
 def get_weather_condition(city):
